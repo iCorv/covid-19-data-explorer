@@ -6,7 +6,8 @@ import pandas as pd
 import altair as alt
 
 # data from Johns Hopkins University (https://github.com/CSSEGISandData/COVID-19)
-BASEURL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series"
+BASEURL = "https://raw.githubusercontent.com/CSSEGISandData/" \
+          "COVID-19/master/csse_covid_19_data/csse_covid_19_time_series"
 
 
 @st.cache
@@ -32,12 +33,30 @@ def main():
     st.title("COVID-19 Data Explorer")
     st.markdown(
         """
-        This app visualizes the data describing the spread of COVID-19.
+        This app visualizes the data describing the spread of COVID-19. 
+        Many thanks to the Johns Hopkins University for providing this important data accumulation to the public.
         """
     )
-
+    # get and cache the data
     confirmed, deaths, recovered = get_data()
+
+    # show the dataframes in the app
+    st.markdown("### Confirmed Cases:")
     st.dataframe(confirmed)
+
+    st.markdown("### COVID-19 Related Deaths:")
+    st.dataframe(deaths)
+
+    st.markdown("### Recovered Cases:")
+    st.dataframe(recovered)
+
+    st.info(
+        """
+        by: [Corvin Jaedicke](linkedin.com/in/corvin-jaedicke-ab1341186) 
+        | source code: [GitHub](https://github.com/iCorv/covid-19-data-explorer)
+        | data source: [Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19). 
+        """
+    )
 
 
 if __name__ == "__main__":
