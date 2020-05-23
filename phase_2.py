@@ -34,7 +34,10 @@ def main():
     st.markdown(
         """
         This app visualizes the data describing the spread of COVID-19. 
-        Many thanks to the Johns Hopkins University for providing this important data accumulation to the public.
+        Many thanks to the Johns Hopkins University for providing this important data accumulation to the public. 
+        However, we should never stop the discourse about the 
+        [sources and quality](https://edition.cnn.com/interactive/2020/05/world/worldometer-coronavirus-mystery/index.html) 
+        of our data.
         """
     )
     # get and cache the data
