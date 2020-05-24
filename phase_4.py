@@ -11,6 +11,8 @@ import pydeck as pdk
 BASEURL = "https://raw.githubusercontent.com/CSSEGISandData/" \
           "COVID-19/master/csse_covid_19_data/csse_covid_19_time_series"
 
+DATE_INDEX = None
+
 
 @st.cache
 def get_data():
@@ -65,9 +67,13 @@ def main():
     total_deaths = sum(deaths[date_list[-1]])
     total_confirmed = sum(confirmed[date_list[-1]])
     total_recovered = sum(recovered[date_list[-1]])
-    st.sidebar.error(f'Total Deaths: {total_deaths:,}')
-    st.sidebar.warning(f'Total Confirmed: {total_confirmed:,}')
-    st.sidebar.success(f'Total Recovered: {total_recovered:,}')
+    total_active = total_confirmed - (total_deaths + total_recovered)
+    st.sidebar.header("Total")
+    st.sidebar.text(f'Last updated: {date_list[-1]}')
+    st.sidebar.error(f'Deaths: {total_deaths:,}')
+    st.sidebar.warning(f'Active: {total_active:,}')
+    st.sidebar.success(f'Recovered: {total_recovered:,}')
+    st.sidebar.info(f'Confirmed: {total_confirmed:,}')
 
     if view == "Raw Data":
         # get and cache the data
@@ -91,11 +97,14 @@ def main():
         # get list of regions
         region = df_dict['confirmed']["Country/Region"]
 
+        # lets start with germany
+        idx_ger = list(region).index('Germany')
+
         st.header("Region-wise Visualization")
-        st.markdown("Type the Region you want to investigate in the menu below.")
+        st.markdown("Type the region you want to investigate in the menu below.")
 
         # select a region
-        selection = st.selectbox("Select Region:", region)
+        selection = st.selectbox("Select Region:", region, index=idx_ger)
 
         # iterate over all three dfs and prepare for plot
         for name, _ in df_dict.items():
@@ -141,8 +150,11 @@ def main():
         data_source = st.selectbox("Select Data Source:", ['Confirmed Cases', 'COVID-19 Related Deaths', 'Recovered'])
 
         num_days = len(date_list)
-        date_index = st.slider('Date Slider', min_value=0, max_value=num_days-1, value=num_days-1)
-        st.write('Data displayed for ', date_list[date_index])
+        info_placeholder = st.empty()
+        map_placeholder = st.empty()
+        date_index = st.slider('', min_value=0, max_value=num_days-1, value=num_days-1, format='Day %i')
+        intensity = st.slider('HeatMap Intensity', min_value=5, max_value=70, value=20)
+        info_placeholder.text(f'Data displayed for {date_list[date_index]}')
 
         if data_source == 'Confirmed Cases':
             map_df = map_digest_format(confirmed_raw, date_list[date_index])
@@ -151,25 +163,25 @@ def main():
         else:
             map_df = map_digest_format(recovered_raw, date_list[date_index])
 
-        st.pydeck_chart(pdk.Deck(
+        map_placeholder.pydeck_chart(pdk.Deck(
             map_style='mapbox://styles/mapbox/dark-v9',
             tooltip={"text": "{Country/Region}: {data_string}"},
             initial_view_state=pdk.ViewState(
                 latitude=41.1533,
                 longitude=20.1683,
                 zoom=0.5,
-                pitch=45,
+                pitch=0,
             ),
             layers=[
                 pdk.Layer(
                     'HeatmapLayer',
                     data=map_df,
                     get_position='[Long, Lat]',
-                    opacity=1.,
+                    opacity=1.0,
                     aggregation='"MEAN"',
                     get_weight='[data]',
-                    radius_pixels=70,
-                    threshold=0.03,
+                    radius_pixels=intensity,
+                    threshold=0.02,
                     pickable=True
                 ),
                 pdk.Layer(
