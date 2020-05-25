@@ -135,8 +135,6 @@ def main():
     st.sidebar.info(f'Confirmed: {total_confirmed:,}')
 
     if view == 'Raw Data':
-        # get and cache the data
-        #confirmed, deaths, recovered, confirmed_raw, _, _, _ = get_data()
 
         # show the dataframes in the app
         st.markdown('### Confirmed Cases:')
@@ -149,7 +147,6 @@ def main():
         st.dataframe(recovered)
 
     elif view == 'Data Visualization':
-        #confirmed, deaths, recovered, _, _, _, _ = get_data()
 
         df_dict = {'confirmed': confirmed, 'recovered': recovered, 'deaths': deaths}
 
