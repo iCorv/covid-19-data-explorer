@@ -1,9 +1,7 @@
 import os
 from functools import reduce
-import math
 
 import streamlit as st
-from streamlit import caching
 import pandas as pd
 import altair as alt
 import pydeck as pdk
@@ -89,7 +87,6 @@ def preprocess_map_data(confirmed_raw, deaths_raw, recovered_raw, confirmed_us_r
     deaths_raw = deaths_raw.drop(columns='Province/State')
     recovered_raw = recovered_raw.drop(columns='Province/State')
 
-
     # merge global and us data
     confirmed_raw = confirmed_raw[confirmed_raw['Country/Region'] != 'US'].append(confirmed_us_raw, ignore_index=True)
     deaths_raw = deaths_raw[deaths_raw['Country/Region'] != 'US'].append(deaths_us_raw, ignore_index=True)
@@ -135,8 +132,6 @@ def main():
     st.sidebar.info(f'Confirmed: {total_confirmed:,}')
 
     if view == 'Raw Data':
-        # get and cache the data
-        #confirmed, deaths, recovered, confirmed_raw, _, _, _ = get_data()
 
         # show the dataframes in the app
         st.markdown('### Confirmed Cases:')
@@ -149,7 +144,6 @@ def main():
         st.dataframe(recovered)
 
     elif view == 'Data Visualization':
-        #confirmed, deaths, recovered, _, _, _, _ = get_data()
 
         df_dict = {'confirmed': confirmed, 'recovered': recovered, 'deaths': deaths}
 

@@ -7,4 +7,4 @@ EXPOSE 8501
 COPY . /app
 
 ENTRYPOINT ["streamlit", "run"]
-CMD ["phase_4.py"]
+CMD ["covid19.py"]

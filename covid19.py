@@ -1,9 +1,7 @@
 import os
 from functools import reduce
-import math
 
 import streamlit as st
-from streamlit import caching
 import pandas as pd
 import altair as alt
 import pydeck as pdk
@@ -88,7 +86,6 @@ def preprocess_map_data(confirmed_raw, deaths_raw, recovered_raw, confirmed_us_r
     confirmed_raw = confirmed_raw.drop(columns='Province/State')
     deaths_raw = deaths_raw.drop(columns='Province/State')
     recovered_raw = recovered_raw.drop(columns='Province/State')
-
 
     # merge global and us data
     confirmed_raw = confirmed_raw[confirmed_raw['Country/Region'] != 'US'].append(confirmed_us_raw, ignore_index=True)
