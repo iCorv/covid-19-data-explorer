@@ -64,7 +64,7 @@ def preprocess_map_data(confirmed_raw, deaths_raw, recovered_raw, confirmed_us_r
                                                                     'Province_State'])
     deaths_us_raw = deaths_us_raw.reset_index().drop(columns=['iso2', 'iso3', 'code3',
                                                               'FIPS', 'Admin2', 'UID',
-                                                              'Province_State'])
+                                                              'Province_State', 'Population'])
 
     # rename some inconsistent columns
     confirmed_us_raw = confirmed_us_raw.rename(columns={'Country_Region': 'Country/Region', 'Long_': 'Long'})
@@ -93,7 +93,7 @@ def preprocess_map_data(confirmed_raw, deaths_raw, recovered_raw, confirmed_us_r
 
     return confirmed_raw, deaths_raw, recovered_raw, date_list
 
-
+@st.cache
 def map_digest_format(df, date):
     map_format = df.copy()
     map_format['data'] = map_format[date]
