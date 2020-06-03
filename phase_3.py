@@ -55,7 +55,7 @@ def main():
 
     if view == "Raw Data":
         # get and cache the data
-        confirmed, deaths, recovered = get_data()
+        confirmed, deaths, recovered, _, _, _, _ = get_data()
 
         # show the dataframes in the app
         st.markdown("### Confirmed Cases:")
