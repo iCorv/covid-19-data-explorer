@@ -1,6 +1,6 @@
 ## Yet another COVID-19 Data Explorer App
 
-The intention of this project is to demonstrate a real-life use-case for the [streamlit](http://streamlit.io) framework. Therfore it is structured into four phases which showcase the streamlit app with increasing complexity.
+The intention of this project is to demonstrate a real-life use-case for the [streamlit](http://streamlit.io) framework. Therfore it is structured into four phases which showcase the streamlit app with increasing complexity. Explore the final app here: http://covid19.cjaedicke.com
 
 ![phases meme](https://github.com/iCorv/covid-19-data-explorer/blob/master/assets/the_phases.jpg "Logo Title Text 1")
 
