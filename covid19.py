@@ -10,6 +10,12 @@ import pydeck as pdk
 BASEURL = 'https://raw.githubusercontent.com/CSSEGISandData/' \
           'COVID-19/master/csse_covid_19_data/csse_covid_19_time_series'
 
+st.set_page_config(  # Alternate names: setup_page, page, layout
+    layout="wide",  # Can be "centered" or "wide". In the future also "dashboard", etc.
+    initial_sidebar_state="auto",  # Can be "auto", "expanded", "collapsed"
+    page_title='COVID-19-DataVisualization',  # String or None. Strings get appended with "• Streamlit".
+    page_icon=None,  # String, anything supported by st.image, or None.
+)
 
 @st.cache
 def get_data():
@@ -27,7 +33,7 @@ def get_data():
     # more granular us data
     confirmed_us_raw = pd.read_csv(url_confirmed_us, index_col=0)
     deaths_us_raw = pd.read_csv(url_deaths_us, index_col=0)
-    return confirmed_raw, deaths_raw, recovered_raw, confirmed_us_raw, deaths_us_raw
+    return confirmed_raw.dropna(), deaths_raw.dropna(), recovered_raw.dropna(), confirmed_us_raw.dropna(), deaths_us_raw.dropna()
 
 
 @st.cache
@@ -107,10 +113,7 @@ def main():
     st.markdown(
         """
         This app visualizes the data describing the spread of COVID-19. 
-        Many thanks to the Johns Hopkins University for providing this important data accumulation to the public. 
-        However, we should never stop the discourse about the 
-        [sources and quality](https://edition.cnn.com/interactive/2020/05/world/worldometer-coronavirus-mystery/index.html) 
-        of our data.
+        Many thanks to the Johns Hopkins University for providing this important data accumulation to the public.
         """
     )
 
